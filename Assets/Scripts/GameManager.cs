@@ -24,6 +24,9 @@ public class GameManager : MonoBehaviour
     public float introDelay = 3f; // Zeit bevor Spiel startet
     public AudioClip introSound;
 
+    [Header("Background Music")]
+    public AudioClip backgroundMusic; // Hintergrundmusik während des Spiels
+
     private GameObject player;
     private GhostController[] ghosts;
     private Vector3 playerStartPosition;

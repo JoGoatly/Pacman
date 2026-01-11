@@ -581,7 +581,7 @@ MonoBehaviour:
   settingsPanel: {fileID: 1265865262}
   volumeSlider: {fileID: 1917708743}
   volumeText: {fileID: 1917110340}
-  menuMusicClip: {fileID: 8300000, guid: a86d20ff8aad201449a3ac4b0371551e, type: 3}
+  menuMusicClip: {fileID: 8300000, guid: 798f98b9a522d534dac1cd1be2679cac, type: 3}
 --- !u!1 &660933446
 GameObject:
   m_ObjectHideFlags: 0
@@ -1061,6 +1061,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe01b37242c959f47a9f1a3a06e372be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultVolume: 0.5
 --- !u!1 &908361993
 GameObject:
   m_ObjectHideFlags: 0

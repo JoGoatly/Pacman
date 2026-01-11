@@ -31,14 +31,26 @@ public class MainMenu : MonoBehaviour
         audioSource.loop = true;
         audioSource.playOnAwake = false;
 
-        // Lade gespeicherte Lautstärke
-        float savedVolume = PlayerPrefs.GetFloat("MasterVolume", 1f);
-        SetVolume(savedVolume);
+        // WARTE kurz damit AudioManager Zeit hat zu initialisieren
+        Invoke("InitializeAudio", 0.1f);
+    }
+
+    void InitializeAudio()
+    {
+        // Hole aktuelle Lautstärke vom AudioListener
+        float currentVolume = AudioListener.volume;
+
+        Debug.Log($"MainMenu Start: AudioListener.volume = {currentVolume}");
 
         if (volumeSlider != null)
         {
-            volumeSlider.value = savedVolume;
+            volumeSlider.SetValueWithoutNotify(currentVolume);
             volumeSlider.onValueChanged.AddListener(SetVolume);
+        }
+
+        if (volumeText != null)
+        {
+            volumeText.text = Mathf.RoundToInt(currentVolume * 100) + "%";
         }
 
         // Spiele Menu-Musik
@@ -61,6 +73,20 @@ public class MainMenu : MonoBehaviour
     {
         mainMenuPanel.SetActive(false);
         settingsPanel.SetActive(true);
+
+        // WICHTIG: Lade aktuelle Lautstärke vom AudioListener
+        float currentVolume = AudioListener.volume;
+
+        Debug.Log($"OpenSettings: AudioListener.volume = {currentVolume}");
+
+        if (volumeSlider != null)
+        {
+            volumeSlider.SetValueWithoutNotify(currentVolume); // Wichtig: SetValueWithoutNotify!
+        }
+        if (volumeText != null)
+        {
+            volumeText.text = Mathf.RoundToInt(currentVolume * 100) + "%";
+        }
     }
 
     public void QuitGame()
@@ -77,9 +103,17 @@ public class MainMenu : MonoBehaviour
     // SETTINGS BUTTONS
     public void SetVolume(float volume)
     {
-        AudioListener.volume = volume;
-        PlayerPrefs.SetFloat("MasterVolume", volume);
-        PlayerPrefs.Save();
+        // Nutze AudioManager falls vorhanden
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.SetVolume(volume);
+        }
+        else
+        {
+            AudioListener.volume = volume;
+            PlayerPrefs.SetFloat("MasterVolume", volume);
+            PlayerPrefs.Save();
+        }
 
         if (volumeText != null)
         {
